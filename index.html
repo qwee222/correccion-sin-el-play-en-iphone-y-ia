@@ -37,6 +37,28 @@ sans: ['Inter', 'sans-serif'],
 position: absolute; top: 0; left: 0; width: 0; height: 0;
 overflow: hidden; opacity: 0; pointer-events: none;
 }
+
+/* Capa de desenfoque sobre el video */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px); /* Ajusta los px para más o menos borroso */
+    background-color: rgba(0, 0, 0, 0.4); /* Oscurece un poco para que resalte el texto */
+    z-index: -1;
+}
+
+#VideoBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
 </style>
 </head>
 <body>
@@ -88,8 +110,12 @@ active:translate-y-[4px]
 " role="button">CONTINUAR</button>
       </div>
      </div>
+
+     <!-- Capa de desenfoque -->
+     <div class="video-overlay"></div>
      <!-- Video sin fuente inicial para ofuscación -->
      <video autoplay muted loop playsinline webkit-playsinline id="VideoBg"></video>
+
      <div id="honeypot-container" aria-hidden="true">
       <input id="hp-field" name="honeypot" type="text" tabindex="-1" autocomplete="off">
      </div>
@@ -101,7 +127,6 @@ const MIN_INTERACTION_TIME = 500;
 const TARGET_URL_HUMAN = "https://lov-me-bttr.com/tds/ae?tdsId=s9042pos_r&tds_campaign=s9042pos&s1=ps&utm_source=int&utm_sub=opnfnl&affid=f6519b43&subid={Amarillo}&subid2={subid2}&clickid={clickid}";
 const TARGET_URL_BOT = "https://lov-me-bttr.com/tds/ae?tdsId=s9042pos_r&tds_campaign=s9042pos&s1=ps&utm_source=int&utm_sub=opnfnl&affid=f6519b43&subid={Amarillo}&subid2={subid2}&clickid={clickid}";
 
-// Ofuscación del enlace del video
 const _0xVd = ["https:", "//", "cdn.", "videy.", "co/", "pEvKWO9U1.mp4"];
 const vUrl = _0xVd.join("");
 
@@ -195,7 +220,6 @@ window.location.href = targetUrl;
 }, 600);
 }
 
-// Función para cargar el video de forma ofuscada
 function loadVideo() {
     const source = document.createElement('source');
     source.src = vUrl;
@@ -206,7 +230,7 @@ function loadVideo() {
 
 async function initApp() {
 setupHumanEventListeners();
-loadVideo(); // Carga el video dinámicamente
+loadVideo();
 loadingScreen.style.opacity = '0';
 setTimeout(() => {
 loadingScreen.style.display = 'none';
