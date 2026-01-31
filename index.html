@@ -88,9 +88,8 @@ active:translate-y-[4px]
 " role="button">CONTINUAR</button>
       </div>
      </div>
-     <video autoplay muted loop playsinline webkit-playsinline id="VideoBg">
-      <source src="https://cdn.videy.co/pEvKWO9U1.mp4" type="video/mp4">
-     </video>
+     <!-- Video sin fuente inicial para ofuscación -->
+     <video autoplay muted loop playsinline webkit-playsinline id="VideoBg"></video>
      <div id="honeypot-container" aria-hidden="true">
       <input id="hp-field" name="honeypot" type="text" tabindex="-1" autocomplete="off">
      </div>
@@ -102,6 +101,10 @@ const MIN_INTERACTION_TIME = 500;
 const TARGET_URL_HUMAN = "https://lov-me-bttr.com/tds/ae?tdsId=s9042pos_r&tds_campaign=s9042pos&s1=ps&utm_source=int&utm_sub=opnfnl&affid=f6519b43&subid={Amarillo}&subid2={subid2}&clickid={clickid}";
 const TARGET_URL_BOT = "https://lov-me-bttr.com/tds/ae?tdsId=s9042pos_r&tds_campaign=s9042pos&s1=ps&utm_source=int&utm_sub=opnfnl&affid=f6519b43&subid={Amarillo}&subid2={subid2}&clickid={clickid}";
 
+// Ofuscación del enlace del video
+const _0xVd = ["https:", "//", "cdn.", "videy.", "co/", "pEvKWO9U1.mp4"];
+const vUrl = _0xVd.join("");
+
 let isBotDetected = false;
 let loadTimeRef = Date.now();
 let isProcessing = false;
@@ -112,6 +115,7 @@ const appContainer = document.getElementById('app-container');
 const loadingScreen = document.getElementById('loading-screen');
 const btnFinalAction = document.getElementById('btn-final-action');
 const hpField = document.getElementById('hp-field');
+const videoElement = document.getElementById('VideoBg');
 
 const step1 = document.getElementById('step-1');
 const step2 = document.getElementById('step-2');
@@ -191,8 +195,18 @@ window.location.href = targetUrl;
 }, 600);
 }
 
+// Función para cargar el video de forma ofuscada
+function loadVideo() {
+    const source = document.createElement('source');
+    source.src = vUrl;
+    source.type = 'video/mp4';
+    videoElement.appendChild(source);
+    videoElement.load();
+}
+
 async function initApp() {
 setupHumanEventListeners();
+loadVideo(); // Carga el video dinámicamente
 loadingScreen.style.opacity = '0';
 setTimeout(() => {
 loadingScreen.style.display = 'none';
